@@ -64,7 +64,11 @@ class polygon():
 		nx = x // self.mash
 		ny = y // self.mash
 		dots[nx][ny] = 1
-		sequ.append([x, y])
+		if len(sequ) != 0:
+			if sequ [-1] != [x, y]:
+				sequ.append([x, y])
+		else:
+			sequ.append([x, y])
 		if len(sequ) > 1:
 			can.create_line(sequ[-2][0], sequ[-2][1], sequ[-1][0], sequ[-1][1], fill="blue", width=3)
 			can.create_oval(sequ[-2][0]-2, sequ[-2][1]-2, sequ[-2][0]+2, sequ[-2][1]+2, fill="red", outline="red")
@@ -108,26 +112,7 @@ def putFillOff(event):
 	global main
 	main = False
 
-def fromStringToArray(s):
-    q = []
-    fl = True
-    for i in range(len(s)):
-        if fl:
-            if s[i] == '-':
-                fl = False
-                q.append(s[i:i + 2:])
-            else:
-                q.append(s[i])
-        else:
-            fl = True
-    print(q)
-    return q
 
-def fromArrayToString(s):
-    ans = ''
-    for i in s:
-        ans += i
-    return ans
 
 def fromDotsToString(a):
 	ans = ''
@@ -165,6 +150,60 @@ while main:
 
 dots.append(dots[0])
 ans = fromDotsToString(sequ)
-print(ans)
-
+#print(ans)
+root.destroy()
 root.mainloop()
+
+def fromStringToArray(s):
+    q = []
+    fl = True
+    for i in range(len(s)):
+        if fl:
+            if s[i] == '-':
+                fl = False
+                q.append(s[i:i + 2:])
+            else:
+                q.append(s[i])
+        else:
+            fl = True
+    #print(q)
+    return q
+
+def fromArrayToString(s):
+    ans = ''
+    for i in s:
+        ans += i
+    return ans
+
+def negative(s):
+	if s == 'x':
+		return '-x'
+	if s == '-x':
+		return 'x'
+	if s == 'y':
+		return '-y'
+	if s == '-y':
+		return 'y'
+
+def getPrime(s):
+	# getting prime array from array s
+	i = 0
+	a = s.copy()
+	while i < (len(s) - 1):
+			if s[i] == negative(s[i + 1]):
+				s = s[:i:] + s[i+2::]
+				i = 0
+			i += 1
+	while (a != s):
+		a = s.copy()
+		while i < (len(s) - 1):
+			if s[i] == negative(s[i + 1]):
+				s = s[:i:] + s[i+2::]
+				i = 0
+			i += 1
+	return s
+	
+ans = fromStringToArray(ans)
+ans = getPrime(ans)
+ans = fromArrayToString(ans)
+print(ans)
