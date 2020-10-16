@@ -152,7 +152,6 @@ dots.append(dots[0])
 ans = fromDotsToString(sequ)
 #print(ans)
 root.destroy()
-root.mainloop()
 
 def fromStringToArray(s):
     q = []
@@ -207,3 +206,61 @@ ans = fromStringToArray(ans)
 ans = getPrime(ans)
 ans = fromArrayToString(ans)
 print(ans)
+class tree_hex():
+	pass
+class square():
+	global w
+	global h
+	root_sq = Tk()
+	root_sq.title("Editing_In_Square")
+	
+	Can = Canvas(root_sq, width = w, height = h, bg = 'white')
+	Can.pack()
+	
+	def line(self, x, y, x1, y1):
+		self.Can.create_line(x, y, x1, y1)
+		self.root_sq.update()
+		return
+	
+	def red_line(self, x, y, x1, y1):
+		self.Can.create_line(x, y, x1, y1, width = 5, fill = "red")
+		self.root_sq.update()
+		return
+
+	global poly
+
+	mash = poly.mash
+	stepLong = mash
+
+	def get_rasm(self):
+		global w, h
+		for i in range(h // self.mash):
+			self.line(0, i * self.mash, w, i * self.mash)
+			self.line(i * self.mash, 0, i * self.mash, w)
+		self.root_sq.update()
+		return
+
+	def get_figure(self, word):
+		word = fromStringToArray(word)
+		x, y = 5 * self.mash, 5 * self.mash
+		for i in word:
+			if i == 'y':
+				self.red_line(x, y, x, y - self.stepLong)
+				x, y = x, y - self.stepLong
+			elif i == '-y':
+				self.red_line(x, y, x, y + self.stepLong)
+				x, y = x, y + self.stepLong
+			elif i == 'x':
+				self.red_line(x, y, x + self.stepLong, y)
+				x, y = x + self.stepLong, y
+			elif i == '-x':
+				self.red_line(x, y, x - self.stepLong, y)
+				x, y = x - self.stepLong, y
+		self.root_sq.update()
+		return
+
+sq = square()
+sq.get_rasm()
+sq.get_figure(ans)
+while True:
+	sq.root_sq.update()
