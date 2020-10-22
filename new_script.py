@@ -206,8 +206,89 @@ ans = fromStringToArray(ans)
 ans = getPrime(ans)
 ans = fromArrayToString(ans)
 print(ans)
-class tree_hex():
-	pass
+class trihexagonal():
+	global w
+	global h
+	root_tri = Tk()
+	root_tri.title("Editing_In_Trihexagonal")
+	
+	Can = Canvas(root_tri, width = w, height = h, bg = 'white')
+	Can.pack()
+	
+	def line(self, x, y, x1, y1):
+		self.Can.create_line(x, y, x1, y1)
+		self.root_tri.update()
+		return
+
+	def red_line(self, x, y, x1, y1):
+		self.Can.create_line(x, y, x1, y1, width = 5, fill = "red")
+		self.root_tri.update()
+		return
+
+	global poly
+
+	stepLong = poly.mash
+	mash = sqrt(3) / 2 * stepLong
+
+	def get_rasm(self):
+		global w, h
+		for i in range(-(h // self.stepLong), h // self.stepLong * 2):
+			if i % 2 == 0:
+				self.line(0, i * self.mash, w, i * self.mash)
+			if i % 2 == 0:
+				self.line(i * self.stepLong, 0, i * self.stepLong + int(h / self.mash / 2 * self.stepLong), h)
+			else:
+				self.line(i * self.stepLong, 0, i * self.stepLong - int(h / self.mash / 2 * self.stepLong), h)
+		self.root_tri.update()
+		return
+
+	def next_permutation(self, x, y, s):
+		if (y % (self.mash * 2) != 0):
+			if s == 'y':
+				if x % (self.stepLong * 2) != 0:
+					y -= self.mash
+					x -= self.stepLong // 2
+				else:
+					y -= self.mash
+					x += self.stepLong // 2
+			elif s == '-y':
+				if x % (self.stepLong * 2) != 0:
+					y += self.mash
+					x += self.stepLong // 2
+				else:
+					y += self.mash
+					x -= self.stepLong // 2
+			elif s == 'x':
+				x += self.stepLong
+			elif s == '-x':
+				x -= self.stepLong
+		else:
+			if s == 'y':
+				y -= self.mash
+				x -= self.stepLong // 2
+			elif s == '-y':
+				y += self.mash
+				x += self.stepLong // 2
+			elif s == '-x':
+				y += self.mash
+				x -= self.stepLong // 2
+			elif s == 'x':
+				y -= self.mash
+				x += self.stepLong // 2
+		return [x, y]
+	# x # int(sqrt(3) / 2 * x)
+	def get_figure(self, word):
+		word = fromStringToArray(word)
+		x, y = 6 * self.stepLong, 6 * self.mash
+		for i in word:
+			a = self.next_permutation(x, y, i)
+			self.red_line(x, y, a[0], a[1])
+			sleep(0.1)
+			x, y = a[0], a[1]
+		self.root_tri.update()
+		return
+
+
 class square():
 	global w
 	global h
@@ -242,7 +323,7 @@ class square():
 
 	def get_figure(self, word):
 		word = fromStringToArray(word)
-		x, y = 5 * self.mash, 5 * self.mash
+		x, y = self.mash * 6, self.mash * 6
 		for i in word:
 			if i == 'y':
 				self.red_line(x, y, x, y - self.stepLong)
@@ -260,7 +341,10 @@ class square():
 		return
 
 sq = square()
+trihex = trihexagonal()
 sq.get_rasm()
+trihex.get_rasm()
 sq.get_figure(ans)
+trihex.get_figure(ans)
 while True:
 	sq.root_sq.update()
